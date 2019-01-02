@@ -1,0 +1,5 @@
+[development]
+rabbit_host = "amqp://guest:guest@localhost:5672"
+
+[testing]
+rabbit_host = "amqp://guest:guest@rabbit:5672"

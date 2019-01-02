@@ -5,6 +5,4 @@ until nc -z ${RABBIT_HOST} ${RABBIT_PORT}; do
     sleep 3
 done
 
-export FLASK_APP=app.py
-export FLASK_ENV=development
-flask run -h 0.0.0.0 -p 8000
+flask run -h ${GATEWAY_HOST} -p ${GATEWAY_PORT}

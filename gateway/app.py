@@ -5,12 +5,13 @@ from flask_nameko import FlaskPooledClusterRpcProxy
 from flask_restplus import Resource, Api
 from auth import authorize, authorizations
 
+from dynaconf import settings
+
 # Flask setup
 app = Flask(__name__)
-app.config.update(dict(NAMEKO_AMQP_URI='amqp://rabbit'))
+app.config.update(dict(NAMEKO_AMQP_URI=settings["rabbit_host"]))
 
 # Flask RESTplus setup
-
 api = Api(app, version='1.0', title='Sample API', description='A sample API', authorizations=authorizations)
 
 # Nameko setup

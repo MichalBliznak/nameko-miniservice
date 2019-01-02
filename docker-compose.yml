@@ -33,3 +33,7 @@ services:
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
       RABBIT_PORT: "5672"
+      GATEWAY_HOST: "0.0.0.0"
+      GATEWAY_PORT: "8000"
+      FLASK_ENV: "testing"
+      ENV_FOR_DYNACONF: "testing"
