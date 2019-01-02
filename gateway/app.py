@@ -3,11 +3,11 @@
 from flask import Flask
 from flask_nameko import FlaskPooledClusterRpcProxy
 from flask_restplus import Resource, Api
-from gateway.auth import authorize, authorizations
+from auth import authorize, authorizations
 
 # Flask setup
 app = Flask(__name__)
-app.config.update(dict(NAMEKO_AMQP_URI='amqp://localhost'))
+app.config.update(dict(NAMEKO_AMQP_URI='amqp://rabbit'))
 
 # Flask RESTplus setup
 

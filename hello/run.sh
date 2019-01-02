@@ -5,4 +5,4 @@ until nc -z ${RABBIT_HOST} ${RABBIT_PORT}; do
     sleep 3
 done
 
-nameko run hello
+nameko run --config config.yml hello
