@@ -26,5 +26,10 @@ class HelloController(Resource):
     @api.doc(responses={401: "Not Authorized", 403: "Forbidden", 200: "OK"})
     @authorize
     def get(self, name):
-        res = rpc.greetings_service.hello.call_async(name)
-        return {"message": res.result()}
+        try:
+            res = rpc.greetings_service.hello.call_async(name)
+            message = res.result()
+        except:
+            message = "Ooops, the service seems to be unreachable... :("
+        return {"message": message}
+

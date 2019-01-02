@@ -1,4 +1,8 @@
 from nameko.rpc import rpc
+from eventlet import Timeout
+
+import time
+import random
 
 
 class GreetingService:
@@ -6,4 +10,12 @@ class GreetingService:
 
     @rpc
     def hello(self, name):
-        return "Hello, {}!".format(name)
+        timeout = Timeout(5)
+        try:
+            time.sleep(random.randint(0, 10))
+            message = "Hello, {}!".format(name)
+        except:
+            message = "Ooops, timeout has occurred... :("
+        finally:
+            timeout.cancel()
+        return message
