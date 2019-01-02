@@ -18,11 +18,12 @@ rpc = FlaskPooledClusterRpcProxy()
 rpc.init_app(app)
 
 
-@api.route('/hello')
+@api.route('/hello/<name>')
 class HelloController(Resource):
+    @api.doc(params={'name': 'Name to say Hello'})
     @api.doc(security="apikey")
     @api.doc(responses={401: "Not Authorized", 403: "Forbidden", 200: "OK"})
     @authorize
-    def get(self):
-        res = rpc.greetings_service.hello.call_async('Michal')
+    def get(self, name):
+        res = rpc.greetings_service.hello.call_async(name)
         return {"message": res.result()}
