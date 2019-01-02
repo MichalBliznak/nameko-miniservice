@@ -3,7 +3,7 @@
 from flask import Flask
 from flask_nameko import FlaskPooledClusterRpcProxy
 from flask_restplus import Resource, Api
-from auth import authorize, authorizations
+from gateway.auth import authorize, authorizations
 
 # Flask setup
 app = Flask(__name__)

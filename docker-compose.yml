@@ -1,0 +1,35 @@
+version: "2"
+services:
+
+  rabbit:
+    image: rabbitmq:3.6-management
+    ports:
+      - "15672:15672"
+    expose:
+      - 5672
+
+  hello:
+    build:
+      context: hello
+    links:
+      - rabbit
+    environment:
+      RABBIT_PASSWORD: "guest"
+      RABBIT_USER: "guest"
+      RABBIT_HOST: "rabbit"
+      RABBIT_PORT: "5672"
+
+  gateway:
+    build:
+      context: gateway
+    links:
+      - rabbit
+    depends_on:
+      - hello
+    ports:
+        - "8000:8000"
+    environment:
+      RABBIT_PASSWORD: "guest"
+      RABBIT_USER: "guest"
+      RABBIT_HOST: "rabbit"
+      RABBIT_PORT: "5672"
