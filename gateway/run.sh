@@ -5,4 +5,5 @@ until nc -z ${RABBIT_HOST} ${RABBIT_PORT}; do
     sleep 3
 done
 
-flask run -h ${GATEWAY_HOST} -p ${GATEWAY_PORT}
+# flask run -h ${GATEWAY_HOST} -p ${GATEWAY_PORT}
+gunicorn --workers 4 --worker-class eventlet --bind ${GATEWAY_HOST}:${GATEWAY_PORT} app:app
