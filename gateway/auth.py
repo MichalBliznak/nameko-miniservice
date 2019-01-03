@@ -9,7 +9,7 @@ authorizations = {
 }
 
 
-def authorize(call):
+def authorize(func):
     def check_token(*args, **kargs):
         token = None
 
@@ -18,7 +18,7 @@ def authorize(call):
 
         if token:
             if token == "1234":
-                return call(*args, **kargs)
+                return func(*args, **kargs)
             else:
                 return {"message": "Forbidden"}, 403
         else:
