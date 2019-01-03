@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY config.yml ./
 COPY run.sh ./
 COPY hello.py ./
+COPY utils.py ./
 
 RUN chmod +x ./run.sh
 
