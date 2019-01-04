@@ -1,4 +1,6 @@
 from flask import request
+from redis import Redis
+from dynaconf import settings
 
 authorizations = {
     "apikey": {
@@ -7,6 +9,8 @@ authorizations = {
         "name": "X-API-KEY"
     }
 }
+
+r = Redis(host=settings["redis_host"], port=settings["redis_port"], db=0)
 
 
 def authorize(func):
@@ -17,11 +21,16 @@ def authorize(func):
             token = request.headers["X-API-KEY"]
 
         if token:
-            if token == "1234":
+            if r.get(token) is not None:
                 return func(*args, **kargs)
             else:
-                return {"message": "Forbidden"}, 403
+                return {"message": "Login needed"}, 403
         else:
             return {"message": "Authorization token is missing"}, 401
 
     return check_token
+
+
+def save_token(token, username, expire):
+    r.set(token, username)
+    r.expire(token, expire)
