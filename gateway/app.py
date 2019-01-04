@@ -13,7 +13,9 @@ app = Flask(__name__)
 app.config.update(dict(NAMEKO_AMQP_URI=settings["rabbit_host"]))
 
 # Flask RESTplus setup
-api = Api(app, version='1.0', title='Sample API', description='A sample API', authorizations=authorizations)
+api = Api(app, version='1.0', title='Hello Cloud API',
+          description='A sample cloud project demonstrating Flask + Nameko frameworks',
+          authorizations=authorizations)
 
 ns_login = api.namespace("login", description="Login API")
 ns_api = api.namespace("api", description="Features API")

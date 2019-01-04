@@ -5,5 +5,10 @@ until nc -z ${RABBIT_HOST} ${RABBIT_PORT}; do
     sleep 3
 done
 
+until nc -z ${REDIS_HOST} ${REDIS_PORT}; do
+    echo "$(date) - waiting for redis..."
+    sleep 3
+done
+
 # flask run -h ${GATEWAY_HOST} -p ${GATEWAY_PORT}
 gunicorn --workers 4 --worker-class sync --bind ${GATEWAY_HOST}:${GATEWAY_PORT} app:app

@@ -8,6 +8,11 @@ services:
     expose:
       - 5672
 
+  redis:
+    image: redis:5-alpine
+    expose:
+      - 6379
+
   hello:
     build:
       context: hello
@@ -24,6 +29,7 @@ services:
       context: gateway
     links:
       - rabbit
+      - redis
     depends_on:
       - hello
     ports:
@@ -33,6 +39,8 @@ services:
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
       RABBIT_PORT: "5672"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
       GATEWAY_HOST: "0.0.0.0"
       GATEWAY_PORT: "8000"
       FLASK_ENV: "testing"

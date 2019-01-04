@@ -3,3 +3,4 @@ flask
 flask_nameko
 flask_restplus
 dynaconf
+redis
