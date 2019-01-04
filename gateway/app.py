@@ -27,8 +27,7 @@ class HelloController(Resource):
     @authorize
     def get(self, name):
         try:
-            res = rpc.greetings_service.hello.call_async(name)
-            message = res.result()
+            message = rpc.greetings_service.hello(name)
         except:
             message = "Ooops, the service seems to be unreachable... :("
         return {"message": message}
