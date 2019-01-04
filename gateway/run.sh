@@ -6,4 +6,4 @@ until nc -z ${RABBIT_HOST} ${RABBIT_PORT}; do
 done
 
 # flask run -h ${GATEWAY_HOST} -p ${GATEWAY_PORT}
-gunicorn --workers 4 --worker-class eventlet --bind ${GATEWAY_HOST}:${GATEWAY_PORT} app:app
+gunicorn --workers 4 --worker-class sync --bind ${GATEWAY_HOST}:${GATEWAY_PORT} app:app
