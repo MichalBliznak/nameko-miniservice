@@ -3,7 +3,8 @@
 from flask import Flask, request
 from flask_nameko import FlaskPooledClusterRpcProxy
 from flask_restplus import Resource, Api, fields
-from auth import authorize, authorizations, save_token
+from auth import authorize, authorizations, save_token, delete_token
+from errors import error
 from dynaconf import settings
 
 # Flask setup
@@ -24,7 +25,7 @@ rpc.init_app(app)
 
 # Set up models
 login_model = api.model('Login', {
-    'user': fields.String(required=True, description='User name'),
+    'username': fields.String(required=True, description='User name'),
     'password': fields.String(required=True, description='User password')
 })
 
@@ -38,9 +39,9 @@ class HelloController(Resource):
     def get(self, name):
         try:
             message = rpc.greetings_service.hello(name)
+            return {"message": message}
         except:
-            message = "Ooops, the service seems to be unreachable... :("
-        return {"message": message}
+            return {"error": error(3, "Ooops, the service seems to be unreachable... :(")}
 
 
 @ns_login.route('/')
@@ -53,16 +54,22 @@ class LoginController(Resource):
             res = rpc.auth_service.login(payload["username"], payload["password"])
             if type(res) is dict:
                 save_token(res["access_token"], payload["username"], 3600)
-                return {"status": "Success"}
+                return {"status": "Success",
+                        "apiKey": res["access_token"]}
             else:
                 return {"status": "Unable to login",
-                        "error": {
-                            "code": "2",
-                            "message": "Unexpected response type"
-                        }}
+                        "error": error(2, "Unexpected response type")}
         except Exception as e:
             return {"status": "Unable to login",
-                    "error": {
-                        "code": "1",
-                        "message": "{}".format(e)
-                    }}
+                    "error": error(1, "{}".format(e))}
+
+    @api.doc(security="apikey")
+    @authorize
+    def delete(self):
+        try:
+            delete_token()
+            return {"status": "Success"}
+        except Exception as e:
+            return {"status": "Unable to logout",
+                    "error": error(1, "{}".format(e))}
+

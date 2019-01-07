@@ -24,7 +24,7 @@ def authorize(func):
             if r.get(token) is not None:
                 return func(*args, **kargs)
             else:
-                return {"message": "Login needed"}, 403
+                return {"message": "Login is needed"}, 403
         else:
             return {"message": "Authorization token is missing"}, 401
 
@@ -34,3 +34,8 @@ def authorize(func):
 def save_token(token, username, expire):
     r.set(token, username)
     r.expire(token, expire)
+
+
+def delete_token():
+    token = request.headers["X-API-KEY"]
+    r.delete(token)
