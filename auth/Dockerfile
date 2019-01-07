@@ -11,6 +11,8 @@ COPY config.yml ./
 COPY run.sh ./
 COPY auth.py ./
 COPY utils.py ./
+COPY models.py ./
+COPY credentials.sqlite ./
 
 RUN chmod +x ./run.sh
 

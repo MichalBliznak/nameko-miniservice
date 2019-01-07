@@ -7,8 +7,10 @@ def timeout(seconds):
             t = Timeout(seconds)
             try:
                 return func(*args, **kargs)
-            except:
+            except Timeout:
                 message = {"error": {"code": 501, "message": "Service timeout reached"}}
+            except Exception as e:
+                message = {"error": {"code": 500, "message": "Internal server error: {}".format(e)}}
             finally:
                 t.cancel()
             return message

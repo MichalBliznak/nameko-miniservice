@@ -40,8 +40,8 @@ class HelloController(Resource):
         try:
             message = rpc.greetings_service.hello(name)
             return {"message": message}
-        except:
-            return {"error": error(3, "Ooops, the service seems to be unreachable... :(")}
+        except Exception as e:
+            return {"error": error(500, "Internal server error: {}".format(e))}
 
 
 @ns_login.route('/')
@@ -52,18 +52,21 @@ class LoginController(Resource):
         try:
             payload = request.json
             res = rpc.auth_service.login(payload["username"], payload["password"])
-            if type(res) is dict:
+            if "error" in res.keys():
+                return {"status": "Unable to login",
+                        "error": res["error"]}, 403
+            elif "access_token" in res.keys():
                 save_token(res["access_token"], payload["username"], 3600)
                 return {"status": "Success",
                         "apiKey": res["access_token"]}
             else:
-                return {"status": "Unable to login",
-                        "error": error(2, "Unexpected response type")}
+                raise Exception("Unknown response format")
         except Exception as e:
             return {"status": "Unable to login",
-                    "error": error(1, "{}".format(e))}
+                    "error": error(500, "Internal server error: {}".format(e))}, 500
 
     @api.doc(security="apikey")
+    @api.doc(responses={200: "OK"})
     @authorize
     def delete(self):
         try:
@@ -71,5 +74,5 @@ class LoginController(Resource):
             return {"status": "Success"}
         except Exception as e:
             return {"status": "Unable to logout",
-                    "error": error(1, "{}".format(e))}
+                    "error": error(500, "Internal server error: {}".format(e))}, 500
 
