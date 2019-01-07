@@ -56,7 +56,7 @@ class LoginController(Resource):
                 return {"status": "Unable to login",
                         "error": res["error"]}, 403
             elif "access_token" in res.keys():
-                save_token(res["access_token"], payload["username"], 3600)
+                save_token(res["access_token"], payload["username"], settings["token_expiration"])
                 return {"status": "Success",
                         "apiKey": res["access_token"]}
             else:
