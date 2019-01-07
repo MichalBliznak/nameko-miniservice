@@ -4,4 +4,4 @@ CREATE TABLE Users (
   username Varchar NOT NULL,
   password Varchar NOT NULL
 );
-INSERT INTO Users(username, password) VALUES('michalbliznak', '123456789');
+INSERT INTO Users(id, username, password) VALUES(1, 'demo', 'demo');
