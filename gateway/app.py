@@ -58,7 +58,7 @@ class LoginController(Resource):
             elif "access_token" in res.keys():
                 save_token(res["access_token"], payload["username"], settings["token_expiration"])
                 return {"status": "Success",
-                        "apiKey": res["access_token"]}
+                        "access_token": res["access_token"]}
             else:
                 raise Exception("Unknown response format")
         except Exception as e:
