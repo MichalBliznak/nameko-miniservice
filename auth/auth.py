@@ -6,10 +6,12 @@ from sqlalchemy.orm.exc import NoResultFound
 
 import random
 import base64
+import jwt
 
 
 class LoginService:
     name = "auth_service"
+    secret = "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
 
     db = Database(Base)
 
@@ -24,9 +26,11 @@ class LoginService:
     @timeout(3)
     def login(self, username, password):
         try:
-            pswd = self.db.get_session().query(User).filter(User.username == username).one().password
-            if password == pswd:
-                return {"access_token": self.create_token()}
+            rec = self.db.get_session().query(User).filter(User.username == username).one()
+            if password == rec.password:
+                payload = {"userId": rec.userid,
+                           "token": self.create_token()}
+                return {"access_token": jwt.encode(payload, self.secret, algorithm="HS256").decode().rstrip()}
             else:
                 raise NoResultFound()
         except NoResultFound:

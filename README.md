@@ -33,3 +33,10 @@ How to stop and remove the application
 ```bash
 $ docker-compose down
 ```
+
+Credentials
+-----------
+
+Username: demo
+
+Password: demo

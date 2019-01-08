@@ -1,4 +1,4 @@
 TODOs
 =====
 
-* JWT support in Auth service
+* Move JWT secret to Vault server (https://dynaconf.readthedocs.io/en/latest/guides/sensitive_secrets.html)

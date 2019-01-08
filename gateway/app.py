@@ -33,7 +33,7 @@ login_model = api.model('Login', {
 @ns_api.route('/hello/<name>')
 class HelloController(Resource):
     @api.doc(params={'name': 'Name to say Hello'})
-    @api.doc(security="apikey")
+    @api.doc(security="bearer")
     @api.doc(responses={401: "Not Authorized", 403: "Forbidden", 200: "OK"})
     @authorize
     def get(self, name):
@@ -56,7 +56,7 @@ class LoginController(Resource):
                 return {"status": "Unable to login",
                         "error": res["error"]}, 403
             elif "access_token" in res.keys():
-                save_token(res["access_token"], payload["username"], settings["token_expiration"])
+                save_token(res["access_token"], settings["token_expiration"])
                 return {"status": "Success",
                         "access_token": res["access_token"]}
             else:
@@ -65,7 +65,7 @@ class LoginController(Resource):
             return {"status": "Unable to login",
                     "error": error(500, "Internal server error: {}".format(e))}, 500
 
-    @api.doc(security="apikey")
+    @api.doc(security="bearer")
     @api.doc(responses={200: "OK"})
     @authorize
     def delete(self):

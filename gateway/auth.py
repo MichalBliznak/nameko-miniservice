@@ -1,13 +1,11 @@
 from flask import request
 from redis import Redis
 from dynaconf import settings
+from errors import error
+
+import jwt
 
 authorizations = {
-    "apikey": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-API-KEY"
-    },
     "bearer": {
         "type": "apiKey",
         "in": "header",
@@ -15,46 +13,40 @@ authorizations = {
     }
 }
 
+# Initialize Redis
 r = Redis(host=settings["redis_host"], port=settings["redis_port"], db=0)
+
+# Initialize the auth secret
+secret = "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
 
 
 def authorize(func):
     def check_token(*args, **kargs):
-        if "X-API-KEY" in request.headers:
-            return check_apikey(*args, **kargs)
-        elif "Authorization" in request.headers:
-            return check_bearer(*args, **kargs)
-        else:
-            return {"message": "Authorization token is missing"}, 401
-
-    def check_apikey(*args, **kargs):
-        token = request.headers["X-API-KEY"]
-        if r.get(token) is not None:
-            return func(*args, **kargs)
-        else:
-            return {"message": "Login is needed"}, 403
-
-    def check_bearer(*args, **kargs):
-        token = request.headers["Authorization"]
-        token.replace("Bearer ", "")
-        if r.get(token) is not None:
-            return func(*args, **kargs)
-        else:
-            return {"message": "Login is needed"}, 403
+        try:
+            if "Authorization" in request.headers:
+                token = request.headers["Authorization"].replace("Bearer ", "")
+                payload = jwt.decode(token, secret, algorithms="HS256")
+                t = r.get(payload["userId"])
+                if t is not None and t.decode() == payload["token"]:
+                    return func(*args, **kargs)
+                else:
+                    return {"message": "Login is needed"}, 403
+            else:
+                return {"message": "Authorization token is missing"}, 401
+        except Exception as e:
+            return {"error": error(500, "Unable to authorize the request: {}".format(e))}
 
     return check_token
 
 
-def save_token(token, username, expire):
-    token.replace("Bearer ", "")
-    r.set(token, username)
-    r.expire(token, expire)
+def save_token(token, expire):
+    payload = jwt.decode(token, secret, algorithms="HS256")
+    r.set(payload["userId"], payload["token"])
+    r.expire(payload["userId"], expire)
 
 
 def delete_token():
-    token = None
-    if "X-API-KEY" in request.headers:
-        token = request.headers["X-API-KEY"]
-    elif "Authorization" in request.headers:
-        token = request.headers["Authorization"].replace("Bearer ", "")
-    r.delete(token)
+    token = request.headers["Authorization"].replace("Bearer ", "")
+    payload = jwt.decode(token, secret, algorithms="HS256")
+    r.delete(payload["userId"])
+
