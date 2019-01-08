@@ -1,1 +1,3 @@
 AMQP_URI: amqp://${RABBIT_USER}:${RABBIT_PASSWORD}@${RABBIT_HOST}:${RABBIT_PORT}/
+DB_URIS:
+  "auth_service:Base": sqlite:///credentials.sqlite

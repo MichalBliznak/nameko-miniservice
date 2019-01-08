@@ -1,21 +1,17 @@
 from nameko.rpc import rpc
 from utils import timeout
-from models import User
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from models import User, Base
+from nameko_sqlalchemy import Database
 from sqlalchemy.orm.exc import NoResultFound
 
 import random
 import base64
 
 
-engine = create_engine('sqlite:///credentials.sqlite')
-Session = sessionmaker(bind=engine)
-db_session = Session()
-
-
 class LoginService:
     name = "auth_service"
+
+    db = Database(Base)
 
     @staticmethod
     def create_token():
@@ -28,7 +24,7 @@ class LoginService:
     @timeout(3)
     def login(self, username, password):
         try:
-            pswd = db_session.query(User).filter(User.username == username).one().password
+            pswd = self.db.get_session().query(User).filter(User.username == username).one().password
             if password == pswd:
                 return {"access_token": self.create_token()}
             else:
