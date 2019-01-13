@@ -41,7 +41,7 @@ class HelloController(Resource):
             message = rpc.greetings_service.hello(name)
             return {"message": message}
         except Exception as e:
-            return {"error": error(500, "Internal server error: {}".format(e))}
+            return {"error": error(500, "Internal server error: {}".format(e))}, 500
 
 
 @ns_login.route('/')
