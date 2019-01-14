@@ -10,7 +10,7 @@ class GreetingService:
     ID = random.randint(0, 1000)
 
     @rpc
-    @timeout(3)
+    @timeout(2)
     def hello(self, name):
-        time.sleep(random.randint(0, 5))
+        time.sleep(random.randint(0, 10))
         return "Hello with ID '{}', {}!".format(GreetingService.ID, name)

@@ -1,3 +1,4 @@
 nameko
 nameko_sqlalchemy
 pyjwt
+circuitbreaker
