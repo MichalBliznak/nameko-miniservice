@@ -21,6 +21,13 @@ $ docker-compose build
 How to run the application
 --------------------------
 
+In case of the first run:
+
+```bash
+$ cd scripts
+$ ./init_sentry.sh
+```
+
 ```bash
 $ docker-compose up -d
 ```

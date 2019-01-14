@@ -1,5 +1,5 @@
 AMQP_URI: amqp://${RABBIT_USER}:${RABBIT_PASSWORD}@${RABBIT_HOST}:${RABBIT_PORT}/
 SENTRY:
-  DSN: http://2ed4342ac5c74a1d8856bf5f2f004157@sentry:9000/1
+  DSN: http://${SENTRY_PUBLIC_KEY}@${SENTRY_HOST}:${SENTRY_PORT}/1
   CLIENT_CONFIG:
     site: "Nameko Hello Service"

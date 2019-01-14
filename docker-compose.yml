@@ -11,18 +11,12 @@ services:
     image: rabbitmq:3-management
     ports:
       - 15672:15672
-    expose:
-      - 5672
 
   redis:
     image: redis:5-alpine
-    expose:
-      - 6379
 
   postgres:
     image: postgres:11-alpine
-    expose:
-      - 5432
     environment:
       POSTGRES_USER: sentry
       POSTGRES_PASSWORD: sentry
@@ -83,6 +77,9 @@ services:
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
       RABBIT_PORT: "5672"
+      SENTRY_PUBLIC_KEY: "2eb3e278e4164771977d696920195b37"
+      SENTRY_HOST: "sentry"
+      SENTRY_PORT: "9000"
 
   auth:
     build:
@@ -95,6 +92,9 @@ services:
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
       RABBIT_PORT: "5672"
+      SENTRY_PUBLIC_KEY: "2eb3e278e4164771977d696920195b37"
+      SENTRY_HOST: "sentry"
+      SENTRY_PORT: "9000"
 
   gateway:
     build:
