@@ -2,6 +2,7 @@ from nameko.rpc import rpc
 from utils import timeout
 from models import User, Base
 from nameko_sqlalchemy import Database
+from nameko_sentry import SentryReporter
 from sqlalchemy.orm.exc import NoResultFound
 
 import random
@@ -14,6 +15,7 @@ class LoginService:
     secret = "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
 
     db = Database(Base)
+    sentry = SentryReporter()
 
     @staticmethod
     def create_token():

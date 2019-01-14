@@ -1,10 +1,16 @@
 version: "2"
+
+volumes:
+  pgdb:
+
 services:
+
+# Pre-requisities
 
   rabbit:
     image: rabbitmq:3-management
     ports:
-      - "15672:15672"
+      - 15672:15672
     expose:
       - 5672
 
@@ -13,11 +19,65 @@ services:
     expose:
       - 6379
 
+  postgres:
+    image: postgres:11-alpine
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: sentry
+      POSTGRES_PASSWORD: sentry
+      POSTGRES_DB: sentry
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+
+  sentry:
+    image: sentry:9
+    ports:
+      - 9000:9000
+    links:
+      - redis
+      - postgres
+    environment:
+      SENTRY_SECRET_KEY: "OcR3opOZtaxwptoW3peiwIHi4r9fgBIp"
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_REDIS_HOST: redis
+
+  sentry-cron:
+    image: sentry:9
+    links:
+      - redis
+      - postgres
+    command: "sentry run cron"
+    environment:
+      SENTRY_SECRET_KEY: "OcR3opOZtaxwptoW3peiwIHi4r9fgBIp"
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_REDIS_HOST: redis
+
+  sentry-worker:
+    image: sentry:9
+    links:
+      - redis
+      - postgres
+    command: "sentry run worker"
+    environment:
+      SENTRY_SECRET_KEY: "OcR3opOZtaxwptoW3peiwIHi4r9fgBIp"
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_REDIS_HOST: redis
+
+# Cloud application
+
   hello:
     build:
       context: hello
     links:
       - rabbit
+      - sentry
     environment:
       RABBIT_PASSWORD: "guest"
       RABBIT_USER: "guest"
@@ -29,6 +89,7 @@ services:
       context: auth
     links:
       - rabbit
+      - sentry
     environment:
       RABBIT_PASSWORD: "guest"
       RABBIT_USER: "guest"
@@ -44,7 +105,7 @@ services:
     depends_on:
       - hello
     ports:
-        - "8000:8000"
+        - 8000:8000
     environment:
       RABBIT_PASSWORD: "guest"
       RABBIT_USER: "guest"

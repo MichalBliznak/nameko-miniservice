@@ -1,3 +1,7 @@
 AMQP_URI: amqp://${RABBIT_USER}:${RABBIT_PASSWORD}@${RABBIT_HOST}:${RABBIT_PORT}/
 DB_URIS:
   "auth_service:Base": sqlite:///credentials.sqlite
+SENTRY:
+  DSN: http://2ed4342ac5c74a1d8856bf5f2f004157@sentry:9000/1
+  CLIENT_CONFIG:
+    site: "Nameko Auth Service"
