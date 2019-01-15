@@ -52,10 +52,7 @@ class LoginController(Resource):
         try:
             payload = request.json
             res = rpc.auth_service.login(payload["username"], payload["password"])
-            if "error" in res.keys():
-                return {"status": "Unable to login",
-                        "error": res["error"]}, 403
-            elif "access_token" in res.keys():
+            if "access_token" in res.keys():
                 save_token(res["access_token"], settings["token_expiration"])
                 return {"status": "Success",
                         "access_token": res["access_token"]}
@@ -63,10 +60,10 @@ class LoginController(Resource):
                 raise Exception("Unknown response format")
         except Exception as e:
             return {"status": "Unable to login",
-                    "error": error(500, "Internal server error: {}".format(e))}, 500
+                    "error": error(403, "Forbidden: {}".format(e))}, 403
 
     @api.doc(security="bearer")
-    @api.doc(responses={200: "OK"})
+    @api.doc(responses={200: "OK", 500: "Internal server error"})
     @authorize
     def delete(self):
         try:

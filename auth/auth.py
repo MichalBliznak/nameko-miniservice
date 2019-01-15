@@ -10,6 +10,10 @@ import base64
 import jwt
 
 
+class InvalidCredentials(Exception):
+    pass
+
+
 class LoginService:
     name = "auth_service"
     secret = "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
@@ -24,7 +28,7 @@ class LoginService:
             arr[i] = random.randint(0, 255)
         return base64.encodebytes(arr).decode().rstrip()
 
-    @rpc
+    @rpc(expected_exceptions=InvalidCredentials)
     @timeout(3)
     def login(self, username, password):
         try:
@@ -34,6 +38,7 @@ class LoginService:
                            "token": self.create_token()}
                 return {"access_token": jwt.encode(payload, self.secret, algorithm="HS256").decode().rstrip()}
             else:
-                raise NoResultFound()
+                raise InvalidCredentials("Wrong password")
         except NoResultFound:
-            return {"error": {"code": 403, "message": "Invalid credentials"}}
+            raise InvalidCredentials("User not found")
+
