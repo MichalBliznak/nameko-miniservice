@@ -77,7 +77,7 @@ services:
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
       RABBIT_PORT: "5672"
-      SENTRY_PUBLIC_KEY: "2eb3e278e4164771977d696920195b37"
+      SENTRY_PUBLIC_KEY: ${SENTRY_PUBLIC_KEY}
       SENTRY_HOST: "sentry"
       SENTRY_PORT: "9000"
 
@@ -92,7 +92,7 @@ services:
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
       RABBIT_PORT: "5672"
-      SENTRY_PUBLIC_KEY: "2eb3e278e4164771977d696920195b37"
+      SENTRY_PUBLIC_KEY: ${SENTRY_PUBLIC_KEY}
       SENTRY_HOST: "sentry"
       SENTRY_PORT: "9000"
 
