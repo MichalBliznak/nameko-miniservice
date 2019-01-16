@@ -3,3 +3,4 @@ nameko_sqlalchemy
 nameko_sentry
 pyjwt
 circuitbreaker
+dynaconf

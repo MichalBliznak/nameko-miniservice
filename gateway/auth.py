@@ -17,7 +17,7 @@ authorizations = {
 r = Redis(host=settings["redis_host"], port=settings["redis_port"], db=0)
 
 # Initialize the auth secret
-secret = "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
+secret = settings["JWT_SECRET"]
 
 
 def authorize(func):

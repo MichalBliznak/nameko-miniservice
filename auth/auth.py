@@ -4,6 +4,7 @@ from models import User, Base
 from nameko_sqlalchemy import Database
 from nameko_sentry import SentryReporter
 from sqlalchemy.orm.exc import NoResultFound
+from dynaconf import settings
 
 import random
 import base64
@@ -16,7 +17,7 @@ class InvalidCredentials(Exception):
 
 class LoginService:
     name = "auth_service"
-    secret = "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
+    secret = settings["JWT_SECRET"]
 
     db = Database(Base)
     sentry = SentryReporter()

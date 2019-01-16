@@ -88,6 +88,7 @@ services:
       - rabbit
       - sentry
     environment:
+      DYNACONF_JWT_SECRET: "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
       RABBIT_PASSWORD: "guest"
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
@@ -107,6 +108,7 @@ services:
     ports:
         - 8000:8000
     environment:
+      DYNACONF_JWT_SECRET: "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
       RABBIT_PASSWORD: "guest"
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
