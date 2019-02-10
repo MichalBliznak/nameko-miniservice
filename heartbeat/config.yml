@@ -1,0 +1,5 @@
+AMQP_URI: amqp://${RABBIT_USER}:${RABBIT_PASSWORD}@${RABBIT_HOST}:${RABBIT_PORT}/
+SENTRY:
+  DSN: http://${SENTRY_PUBLIC_KEY}@${SENTRY_HOST}:${SENTRY_PORT}/1
+  CLIENT_CONFIG:
+    site: "Nameko Heartbeat Service"

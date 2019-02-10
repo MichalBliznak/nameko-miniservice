@@ -3,6 +3,7 @@ from utils import timeout
 from models import User, Base
 from nameko_sqlalchemy import Database
 from nameko_sentry import SentryReporter
+from nameko.events import BROADCAST, event_handler
 from sqlalchemy.orm.exc import NoResultFound
 from dynaconf import settings
 
@@ -42,4 +43,8 @@ class LoginService:
                 raise InvalidCredentials("Wrong password")
         except NoResultFound:
             raise InvalidCredentials("User not found")
+
+    @event_handler("heartbeat_service", "heartbeat", handler_type=BROADCAST, reliable_delivery=False)
+    def on_heartbeat(self, ts):
+        print("Received Heartbeat with timestamp {}".format(ts), flush=True)
 

@@ -66,12 +66,29 @@ services:
 
 # Cloud application
 
+  heartbeat:
+    build:
+      context: heartbeat
+    links:
+      - rabbit
+      - sentry
+    environment:
+      DYNACONF_JWT_SECRET: "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
+      RABBIT_PASSWORD: "guest"
+      RABBIT_USER: "guest"
+      RABBIT_HOST: "rabbit"
+      RABBIT_PORT: "5672"
+      SENTRY_PUBLIC_KEY: ${SENTRY_PUBLIC_KEY}
+      SENTRY_HOST: "sentry"
+      SENTRY_PORT: "9000"
+
   hello:
     build:
       context: hello
     links:
       - rabbit
       - sentry
+      - heartbeat
     environment:
       RABBIT_PASSWORD: "guest"
       RABBIT_USER: "guest"
@@ -87,6 +104,7 @@ services:
     links:
       - rabbit
       - sentry
+      - heartbeat
     environment:
       DYNACONF_JWT_SECRET: "aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx"
       RABBIT_PASSWORD: "guest"
