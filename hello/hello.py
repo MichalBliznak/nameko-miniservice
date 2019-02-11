@@ -9,7 +9,6 @@ import random
 
 class GreetingService:
     name = "greetings_service"
-    ID = random.randint(0, 1000)
 
     sentry = SentryReporter()
 
@@ -17,7 +16,7 @@ class GreetingService:
     @timeout(3)
     def hello(self, name):
         time.sleep(random.randint(0, 10))
-        return "Hello with ID '{}', {}!".format(GreetingService.ID, name)
+        return "Hello, {}!".format(name)
 
     @event_handler("heartbeat_service", "heartbeat", handler_type=BROADCAST, reliable_delivery=False)
     def on_heartbeat(self, ts):
