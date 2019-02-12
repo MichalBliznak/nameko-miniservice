@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: hello
+  name: hello
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: hello
+    spec:
+      containers:
+      - env:
+        - name: RABBIT_HOST
+          value: rabbit
+        - name: RABBIT_PASSWORD
+          value: guest
+        - name: RABBIT_PORT
+          value: "5672"
+        - name: RABBIT_USER
+          value: guest
+        - name: SENTRY_HOST
+          value: sentry
+        - name: SENTRY_PORT
+          value: "9000"
+        - name: SENTRY_PUBLIC_KEY
+          value: c07181756bc64157bc68fab4b3007ba4
+        image: hello
+        name: hello
+        resources: {}
+      restartPolicy: Always
+status: {}

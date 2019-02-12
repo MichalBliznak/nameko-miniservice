@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sentry-cron
+  name: sentry-cron
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: sentry-cron
+    spec:
+      containers:
+      - args:
+        - sentry
+        - run
+        - cron
+        env:
+        - name: SENTRY_DB_PASSWORD
+          value: sentry
+        - name: SENTRY_DB_USER
+          value: sentry
+        - name: SENTRY_POSTGRES_HOST
+          value: postgres
+        - name: SENTRY_REDIS_HOST
+          value: redis
+        - name: SENTRY_SECRET_KEY
+          value: OcR3opOZtaxwptoW3peiwIHi4r9fgBIp
+        image: sentry:9
+        name: sentry-cron
+        resources: {}
+      restartPolicy: Always
+status: {}

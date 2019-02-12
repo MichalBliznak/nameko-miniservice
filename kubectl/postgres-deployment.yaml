@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgres
+  name: postgres
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: postgres
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          value: sentry
+        - name: POSTGRES_PASSWORD
+          value: sentry
+        - name: POSTGRES_USER
+          value: sentry
+        image: postgres:11-alpine
+        name: postgres
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: pgdb
+      restartPolicy: Always
+      volumes:
+      - name: pgdb
+        persistentVolumeClaim:
+          claimName: pgdb
+status: {}

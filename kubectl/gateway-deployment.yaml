@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: gateway
+  name: gateway
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: gateway
+    spec:
+      containers:
+      - env:
+        - name: DYNACONF_JWT_SECRET
+          value: aYoXW26E7w3wiVOq4TnHGEkx0OB4cdHx
+        - name: ENV_FOR_DYNACONF
+          value: testing
+        - name: FLASK_ENV
+          value: testing
+        - name: GATEWAY_HOST
+          value: 0.0.0.0
+        - name: GATEWAY_PORT
+          value: "8000"
+        - name: RABBIT_HOST
+          value: rabbit
+        - name: RABBIT_PASSWORD
+          value: guest
+        - name: RABBIT_PORT
+          value: "5672"
+        - name: RABBIT_USER
+          value: guest
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+        image: gateway
+        name: gateway
+        ports:
+        - containerPort: 8000
+        resources: {}
+      restartPolicy: Always
+status: {}
