@@ -1,0 +1,68 @@
+version: "2"
+
+volumes:
+  pgdb:
+
+services:
+
+# Pre-requisities
+
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  redis:
+    image: redis:5-alpine
+    ports:
+      - 6379:6379
+
+  postgres:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: sentry
+      POSTGRES_PASSWORD: sentry
+      POSTGRES_DB: sentry
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+
+  sentry:
+    image: sentry:9
+    ports:
+      - 9000:9000
+    links:
+      - redis
+      - postgres
+    environment:
+      SENTRY_SECRET_KEY: "OcR3opOZtaxwptoW3peiwIHi4r9fgBIp"
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_REDIS_HOST: redis
+
+  sentry-cron:
+    image: sentry:9
+    links:
+      - redis
+      - postgres
+    command: "sentry run cron"
+    environment:
+      SENTRY_SECRET_KEY: "OcR3opOZtaxwptoW3peiwIHi4r9fgBIp"
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_REDIS_HOST: redis
+
+  sentry-worker:
+    image: sentry:9
+    links:
+      - redis
+      - postgres
+    command: "sentry run worker"
+    environment:
+      SENTRY_SECRET_KEY: "OcR3opOZtaxwptoW3peiwIHi4r9fgBIp"
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_REDIS_HOST: redis
