@@ -7,11 +7,39 @@ services:
 
 # Pre-requisities
 
-  rabbit:
-    image: rabbitmq:3-management
+  rabbit-master:
+    build:
+      context: rabbitmq-master
+    hostname: rabbit-master
     ports:
       - 15672:15672
       - 5672:5672
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ZmKpvN2hDMpb5mYY
+
+  rabbit-slave-1:
+    build:
+      context: rabbitmq-slave
+    hostname: rabbit-slave-1
+    ports:
+      - 15673:15672
+      - 5673:5672
+    depends_on:
+      - rabbit-master
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ZmKpvN2hDMpb5mYY
+
+  rabbit-slave-2:
+    build:
+      context: rabbitmq-slave
+    hostname: rabbit-slave-2
+    ports:
+      - 15674:15672
+      - 5674:5672
+    depends_on:
+      - rabbit-master
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ZmKpvN2hDMpb5mYY
 
   redis:
     image: redis:5-alpine
