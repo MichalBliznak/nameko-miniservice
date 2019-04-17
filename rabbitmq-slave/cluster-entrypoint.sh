@@ -17,8 +17,8 @@ rabbitmqctl join_cluster rabbit@rabbit-master
 rabbitmqctl stop
 
 # Wait a while for the app to really stop
-echo "Sleeping for 5s..."
-sleep 5s
+echo "Sleeping for 2s..."
+sleep 2s
 
 # Start it
 rabbitmq-server
