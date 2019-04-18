@@ -2,6 +2,10 @@
 
 set -e
 
+# Wait a while for the master node to start
+echo "Sleeping for 10s (waiting for master node to run)..."
+sleep 10s
+
 # Start RMQ from entry point.
 # This will ensure that environment variables passed
 # will be honored
@@ -17,7 +21,7 @@ rabbitmqctl join_cluster rabbit@rabbit-master
 rabbitmqctl stop
 
 # Wait a while for the app to really stop
-echo "Sleeping for 2s..."
+echo "Sleeping for 2s (Stopping node)..."
 sleep 2s
 
 # Start it

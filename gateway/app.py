@@ -9,7 +9,8 @@ from dynaconf import settings
 
 # Flask setup
 app = Flask(__name__)
-app.config.update(dict(NAMEKO_AMQP_URI=settings["rabbit_uri"]))
+app.config.update(dict(NAMEKO_AMQP_URI=settings["rabbit_uri"],
+                       NAMEKO_POOL_RECYCLE=settings["pool_recycle"]))
 
 # Flask RESTplus setup
 api = Api(app, version='1.0', title='Hello Cloud API',

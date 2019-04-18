@@ -1,5 +1,6 @@
 [default]
 token_expiration = 3600
+pool_recycle = 3600
 
 [development]
 rabbit_uri = "amqp://guest:guest@localhost:5672"
@@ -7,6 +8,6 @@ redis_host = "localhost"
 redis_port = 6379
 
 [testing]
-rabbit_uri = "amqp://guest:guest@rabbit:5672"
+rabbit_uri = "amqp://guest:guest@rabbit-cluster:5672"
 redis_host = "redis"
 redis_port = 6379
