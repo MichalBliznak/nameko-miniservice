@@ -1,6 +1,8 @@
 [default]
 token_expiration = 3600
 pool_recycle = 3600
+limit_login = "50 per hour"
+limit_api = "200 per day"
 
 [development]
 rabbit_uri = "amqp://guest:guest@localhost:5672"

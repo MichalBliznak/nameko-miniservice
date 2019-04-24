@@ -2,6 +2,7 @@ gunicorn
 flask
 flask_nameko
 flask_restplus
+flask_limiter
 dynaconf
 redis
 pyjwt

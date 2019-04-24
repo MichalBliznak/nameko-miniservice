@@ -10,6 +10,13 @@ nameko = "*"
 flask = "*"
 flask-nameko = "*"
 flask-restplus = "*"
+dynaconf = "*"
+redis = "*"
+nameko-sqlalchemy = "*"
+pyjwt = "*"
+circuitbreaker = "*"
+nameko-sentry = "*"
+flask-limiter = "*"
 
 [requires]
 python_version = "3.5"

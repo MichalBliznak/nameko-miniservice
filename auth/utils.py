@@ -8,7 +8,7 @@ class TimeoutException(Exception):
 
 def timeout(seconds):
     def timeout_decorator(func):
-        @circuit()
+        @circuit(failure_threshold=10)
         def fcn_wrapper(*args, **kargs):
             with Timeout(seconds, TimeoutException):
                 return func(*args, **kargs)
