@@ -9,8 +9,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY run.sh ./
 COPY app.py ./
-COPY auth.py ./
-COPY errors.py ./
+COPY security ./security
+COPY core ./core
+COPY apis ./apis
 COPY settings.toml ./
 
 RUN chmod +x ./run.sh

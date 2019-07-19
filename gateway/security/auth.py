@@ -1,7 +1,7 @@
 from flask import request
 from redis import Redis
 from dynaconf import settings
-from errors import error
+from core.errors import error
 
 import jwt
 
@@ -34,7 +34,7 @@ def authorize(func):
             else:
                 return {"message": "Authorization token is missing"}, 401
         except Exception as e:
-            return {"error": error(500, "Unable to authorize the request: {}".format(e))}
+            return {"error": error(500, "Unable to authorize the request: {}".format(e))}, 500
 
     return check_token
 
