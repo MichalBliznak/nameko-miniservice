@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nameko Mini-MiniService Login Page</title>
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+    <script>
+    // JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    </script>
+
+    <form class="needs-validation" style="margin: 20px" novalidate>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</body>
+</html>
