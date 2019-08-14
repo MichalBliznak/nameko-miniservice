@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Nameko Mini-MiniService Login Page</title>
     <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="static/jquery-3.4.1.min.js"></script>
 </head>
-<body>
+<body class="container">
     <script>
     // JavaScript for disabling form submissions if there are invalid fields
     (function() {
@@ -25,25 +26,48 @@
         });
       }, false);
     })();
+
+
+    function submitClicked() {
+        let formData = {"username": $("input:text").val(), "password": $("input:password").val()};
+        console.log(formData);
+
+        $.ajax({
+            type: "POST",
+            url: "/api/1/login/",
+            data: JSON.stringify(formData),
+            success: function(xhr){
+                alert("Sent successfully:\m\n" + xhr.responseText)
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("Error:\n\n" + xhr.responseText);
+            },
+            dataType: "json",
+            contentType : "application/json"
+        });
+    }
     </script>
 
-    <form class="needs-validation" style="margin: 20px" novalidate>
+    <form class="needs-validation center" style="margin: 25%" novalidate method="post">
+        <h1>Nameko-Miniservice Cloud</h1>
+        <hr/>
+        <h2>Enter credentials:</h2>
         <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <label for="username">Email address</label>
+            <input type="text" class="form-control" id="username" aria-describedby="usernamelHelp" placeholder="Enter username" required>
+            <small id="usernameHelp" class="form-text text-muted">We'll never share your username with anyone else.</small>
             <div class="valid-feedback">
                 Looks good!
             </div>
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password" required>
             <div class="valid-feedback">
                 Looks good!
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-primary" onclick="submitClicked()">Submit</button>
     </form>
 </body>
 </html>
