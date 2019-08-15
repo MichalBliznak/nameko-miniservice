@@ -32,6 +32,11 @@
         $('#success').addClass("d-none");
     }
 
+    function getBaseUrl() {
+        let re = new RegExp(/^.*\//);
+        return re.exec(window.location.href);
+    }
+
     function submitClicked() {
 
         hideAlerts();
@@ -58,7 +63,8 @@
             url: "/api/1/login/",
             data: JSON.stringify(formData),
             success: function(xhr){
-                $('#success').text("Success:\n\n" + xhr.responseText);
+                $('#successText').text("Success:\n\n" + JSON.stringify(xhr));
+                $('#successRedirect').attr("href", getBaseUrl() + "/api/1/swagger/");
                 $('#success').removeClass("d-none");
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -71,10 +77,10 @@
     }
     </script>
 
-    <form class="needs-validation center" style="margin: 25%" novalidate method="post">
+    <form class="needs-validation center" style="margin: 20%" novalidate method="post">
         <h1>Nameko-Miniservice Cloud</h1>
         <hr/>
-        <h2>Enter credentials:</h2>
+        <h3>Enter login credentials:</h3>
         <div class="form-group">
             <label for="username">Email address</label>
             <input type="text" class="form-control" id="username" aria-describedby="usernamelHelp" placeholder="Enter username" required>
@@ -92,11 +98,16 @@
         </div>
         <button type="button" class="btn btn-primary" onclick="submitClicked()">Submit</button>
         <hr/>
-        <div id="success" class="alert alert-primary d-none" role="alert">
-          This is a primary alert—check it out!
-        </div>
         <div id="error" class="alert alert-danger d-none" role="alert">
-          This is a danger alert—check it out!
+            This is a danger alert—check it out!
+        </div>
+        <div id="success" class="container d-none">
+            <div id="successText" class="alert alert-primary" style="overflow-wrap: break-word" role="alert">
+                This is a primary alert—check it out!
+            </div>
+            <div>
+                <a id="successRedirect" class="nav-link active" href="">Proceed to the documentation</a>
+            </div>
         </div>
     </form>
 </body>
