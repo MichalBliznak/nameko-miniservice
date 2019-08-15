@@ -9,7 +9,7 @@
 <body class="container">
     <script>
     // JavaScript for disabling form submissions if there are invalid fields
-    (function() {
+    /*(function() {
       'use strict';
       window.addEventListener('load', function() {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -25,10 +25,31 @@
           }, false);
         });
       }, false);
-    })();
+    })();*/
 
+    function hideAlerts() {
+        $('#error').addClass("d-none");
+        $('#success').addClass("d-none");
+    }
 
     function submitClicked() {
+
+        hideAlerts();
+
+        let valid = true;
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            if (form.checkValidity() === false) {
+                valid = false;
+            }
+            form.classList.add('was-validated');
+        });
+
+        if (!valid) return;
+
+        // Submit the form data
         let formData = {"username": $("input:text").val(), "password": $("input:password").val()};
         console.log(formData);
 
@@ -37,10 +58,12 @@
             url: "/api/1/login/",
             data: JSON.stringify(formData),
             success: function(xhr){
-                alert("Sent successfully:\m\n" + xhr.responseText)
+                $('#success').text("Success:\n\n" + xhr.responseText);
+                $('#success').removeClass("d-none");
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert("Error:\n\n" + xhr.responseText);
+                $('#error').text("Error:\n\n" + xhr.responseText);
+                $('#error').removeClass("d-none");
             },
             dataType: "json",
             contentType : "application/json"
@@ -68,6 +91,13 @@
             </div>
         </div>
         <button type="button" class="btn btn-primary" onclick="submitClicked()">Submit</button>
+        <hr/>
+        <div id="success" class="alert alert-primary d-none" role="alert">
+          This is a primary alert—check it out!
+        </div>
+        <div id="error" class="alert alert-danger d-none" role="alert">
+          This is a danger alert—check it out!
+        </div>
     </form>
 </body>
 </html>
