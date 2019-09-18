@@ -6,8 +6,9 @@ metadata:
     kompose.version: 1.17.0 (a74acad)
   creationTimestamp: null
   labels:
-    io.kompose.service: rabbit
-  name: rabbit
+    io.kompose.service: rabbit-cluster
+    app: nameko-miniservice
+  name: rabbit-cluster
 spec:
   replicas: 1
   strategy: {}
@@ -15,13 +16,18 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: rabbit
+        io.kompose.service: rabbit-cluster
+        app: nameko-miniservice
     spec:
       containers:
-      - image: rabbitmq:3-management
-        name: rabbit
+      - image: wcs2releases.azurecr.io/nameko/rabbit-cluster:latest
+        name: rabbit-cluster
         ports:
         - containerPort: 15672
+        - containerPort: 5672
         resources: {}
+      hostname: rabbit-cluster
       restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred
 status: {}

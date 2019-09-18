@@ -6,9 +6,9 @@ metadata:
     kompose.version: 1.17.0 (a74acad)
   creationTimestamp: null
   labels:
-    io.kompose.service: redis
+    io.kompose.service: rabbit-master
     app: nameko-miniservice
-  name: redis
+  name: rabbit-master
 spec:
   replicas: 1
   strategy: {}
@@ -16,12 +16,18 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: redis
+        io.kompose.service: rabbit-master
         app: nameko-miniservice
     spec:
       containers:
-      - image: redis:5-alpine
-        name: redis
+      - env:
+        - name: RABBITMQ_ERLANG_COOKIE
+          value: ZmKpvN2hDMpb5mYY
+        image: wcs2releases.azurecr.io/nameko/rabbit-master:latest
+        name: rabbit-master
         resources: {}
+      hostname: rabbit-master
       restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred
 status: {}

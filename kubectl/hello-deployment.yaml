@@ -7,6 +7,7 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: hello
+    app: nameko-miniservice
   name: hello
 spec:
   replicas: 1
@@ -16,11 +17,14 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.service: hello
+        app: nameko-miniservice
     spec:
       containers:
       - env:
         - name: RABBIT_HOST
-          value: rabbit
+          value: rabbit-cluster
+        - name: RABBIT_MGMT_PORT
+          value: "15672"
         - name: RABBIT_PASSWORD
           value: guest
         - name: RABBIT_PORT
@@ -32,9 +36,11 @@ spec:
         - name: SENTRY_PORT
           value: "9000"
         - name: SENTRY_PUBLIC_KEY
-          value: c07181756bc64157bc68fab4b3007ba4
-        image: hello
+          value: e13d1bff0c314af9963e4c1d76e9f7d9
+        image: wcs2releases.azurecr.io/nameko/hello:latest
         name: hello
         resources: {}
       restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred
 status: {}

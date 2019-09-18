@@ -6,15 +6,18 @@ metadata:
     kompose.version: 1.17.0 (a74acad)
   creationTimestamp: null
   labels:
-    io.kompose.service: gateway
+    io.kompose.service: rabbit-cluster
     app: nameko-miniservice
-  name: gateway
+  name: rabbit-cluster
 spec:
   ports:
-  - name: "8000"
-    port: 8000
-    targetPort: 8000
+  - name: "15672"
+    port: 15672
+    targetPort: 15672
+  - name: "5672"
+    port: 5672
+    targetPort: 5672
   selector:
-    io.kompose.service: gateway
+    io.kompose.service: rabbit-cluster
 status:
   loadBalancer: {}

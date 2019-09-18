@@ -6,15 +6,15 @@ metadata:
     kompose.version: 1.17.0 (a74acad)
   creationTimestamp: null
   labels:
-    io.kompose.service: gateway
+    io.kompose.service: redis
     app: nameko-miniservice
-  name: gateway
+  name: redis
 spec:
   ports:
-  - name: "8000"
-    port: 8000
-    targetPort: 8000
+  - name: "6379"
+    port: 6379
+    targetPort: 6379
   selector:
-    io.kompose.service: gateway
-status:
-  loadBalancer: {}
+    io.kompose.service: redis
+  clusterIP: "None"
+status: {}

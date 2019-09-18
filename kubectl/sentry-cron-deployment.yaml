@@ -7,6 +7,7 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: sentry-cron
+    app: nameko-miniservice
   name: sentry-cron
 spec:
   replicas: 1
@@ -16,6 +17,7 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.service: sentry-cron
+        app: nameko-miniservice
     spec:
       containers:
       - args:

@@ -6,15 +6,15 @@ metadata:
     kompose.version: 1.17.0 (a74acad)
   creationTimestamp: null
   labels:
-    io.kompose.service: gateway
+    io.kompose.service: postgres
     app: nameko-miniservice
-  name: gateway
+  name: postgres
 spec:
   ports:
-  - name: "8000"
-    port: 8000
-    targetPort: 8000
+  - name: "5342"
+    port: 5432
+    targetPort: 5432
   selector:
-    io.kompose.service: gateway
-status:
-  loadBalancer: {}
+    io.kompose.service: postgres
+  clusterIP: "None"
+status: {}

@@ -7,6 +7,7 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: gateway
+    app: nameko-miniservice
   name: gateway
 spec:
   replicas: 1
@@ -16,6 +17,7 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.service: gateway
+        app: nameko-miniservice
     spec:
       containers:
       - env:
@@ -30,7 +32,9 @@ spec:
         - name: GATEWAY_PORT
           value: "8000"
         - name: RABBIT_HOST
-          value: rabbit
+          value: rabbit-cluster
+        - name: RABBIT_MGMT_PORT
+          value: "15672"
         - name: RABBIT_PASSWORD
           value: guest
         - name: RABBIT_PORT
@@ -41,10 +45,12 @@ spec:
           value: redis
         - name: REDIS_PORT
           value: "6379"
-        image: gateway
+        image: wcs2releases.azurecr.io/nameko/gateway:latest
         name: gateway
         ports:
         - containerPort: 8000
         resources: {}
       restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred
 status: {}
