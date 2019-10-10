@@ -6,6 +6,7 @@ metadata:
     kompose.version: 1.17.0 (a74acad)
   creationTimestamp: null
   labels:
+    io.kompose.cluster: rabbit
     io.kompose.service: rabbit-master
     app: nameko-miniservice
   name: rabbit-master

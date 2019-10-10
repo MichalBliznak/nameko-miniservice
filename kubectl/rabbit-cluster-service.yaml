@@ -18,6 +18,7 @@ spec:
     port: 5672
     targetPort: 5672
   selector:
-    io.kompose.service: rabbit-cluster
+    io.kompose.cluster: rabbit
+    # io.kompose.service: rabbit-cluster
 status:
   loadBalancer: {}
